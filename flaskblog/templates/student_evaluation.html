@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block header %}
+<div style="background-image: url({{ backgr }});background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;" class="container">
+   <div class="row d-flex justify-content-center">
+     <div class="m-3">
+      <div class="d-flex justify-content-center text-white" style="align-content: center;">
+        <h6 class="text-warning">Materia : <a class="text-white">{{ materia }}</a></h6>
+      </div>
+        <div class="text-warning">
+          <div class="d-flex justify-content-center">
+          <h1 class="text-white"><i class="bi bi-book text-warning"></i> {{ evaluation.name }} </h1>
+          </div>
+        </div>
+          <div class="d-flex justify-content-center m-4">
+          <h6 class="m-2 text-white"><i class="bi bi-calendar-range text-warning"></i> Desde: {{ evaluation.date_delivered.strftime('%d/%m/%Y') }}</h6><h6 class="m-2 text-white"><i class="bi bi-calendar-event text-warning"></i> Hasta: {{ evaluation.date_limit.strftime('%d/%m/%Y') }}</h6>
+        </div>
+        </div> 
+     </div>
+   </div>
+   <hr>
+ </div>
+{% endblock header %}
+{% block content %}
+<div class="container">
+  <div class="row">
+  <div class="col-md-6">
+  <div class="article-title">
+    <h5><i class="bi bi-info-circle"></i> Descripción</h5>
+  </div>
+  <div style="height: 100px; overflow-y:auto;" class="content-section">
+    {{ evaluation.description }}
+  </div>
+</div>
+<div class="col-md-6">
+  <div class="article-title">
+    <h5><i class="bi bi-mortarboard"></i> Calificacion</h5>
+  </div>
+  <div style="height: 100px; overflow-y:auto;" class="content-section">
+    {% for assign in assign_list %}
+      {% if assign.grade %}
+        <h6><i class="bi bi-list-ol"></i> Nota: {{ assign.grade }}pts</h6>
+      {% else %}
+        <h6><i class="bi bi-info-circle"></i> No ha sido corregido</h6>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+</div>
+<hr>
+</div>
+<h2><i class="bi bi-images"></i> Microfotos ({{ assign_list | length }})</h2>
+  <div class="container">
+    <div class="row mx-auto" style="width: 75%;">
+      <table class="table table-sm table-bordered" style="text-align: center;">
+        <thead class="bg-warning">
+          <tr>
+            <th>#</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for assign in assign_list %}
+          <tr class="bg-white">
+            <td>{{ loop.index }}</td>
+            <td>{% if assign.grade %}<a class="text-success" href="{{ url_for('students.dashboard_view', eval_id=eval_id, student_id=student_id) }}">Ver <i class="bi bi-eye-fill" title="Corregido"></i></a>{% else %}<a class="text-success" href="{{ url_for('students.dashboard_assign', assign_id=assign.id) }}">Responder <i class="bi bi-pencil-fill" title="Iniciar"></i></a>{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+</div>
+  <!-- Modal -->
+{% endblock content %}

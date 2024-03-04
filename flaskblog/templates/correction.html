@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1 class="mb-3"><i class="bi bi-book"></i> Corregido</h1>
+    <hr>
+    <div class="mb-3"><p class="h5"><i class="bi bi-binoculars"></i> Visualización:</p></div>
+  <div id="acc">
+  <div class="d-flex">
+{% for assign in evaluation %}
+      <div class="card bg-light mb-3 collapsed" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ loop.index }}" id="heading{{ loop.index }}" style="box-sizing: content-box; width: 100%;">
+        <div class="card-header"><small><i class="bi bi-image"></i> Microfoto ({{ loop.index }})</small></div>
+        <div class="card-body">
+          <div class="img-zoom-container">
+            <img id="myimage" src="{{ assign[0][0] }}" width="300" height="300" alt="Girl">
+          </div>
+        </div>
+        </div>
+{% endfor%}
+<div class="card bg-light mb-3 ml-2" style="box-sizing: content-box; width: 100%;">
+        <div class="card-header"><small><i class="bi bi-mortarboard-fill"></i> Calificación</small></div>
+        <div class="card-body">
+          {% if not student %}
+          <form method="POST" action="">
+            {{ form.hidden_tag() }}
+          <div class="form-group">
+          {{  form.observation.label(class="form-control-label")}}
+          {{  form.observation(class="form-control form-control-sm")}}
+          </div>
+          <div class="form-group">
+          {{  form.grade.label(class="form-control-label")}}
+          {{  form.grade(class="form-control form-control-sm")}}
+          </div>
+          <div class="form-group">
+          {{  form.submit(class="form-control form-control-sm bg-success text-white")}}
+          </div>
+          </form>
+          {% else %}
+          <div class="form-group">
+            <div class="form-control form-control-sm bg-success text-white" style="text-align: center;">Observación</div>
+            <div class="form-control form-control-sm">{{ observacion }}</div>
+          </div>
+          <div class="form-group">
+            <div class="form-control form-control-sm bg-success text-white" style="text-align: center;">Nota</div>
+            <div class="form-control form-control-sm" style="text-align: center;">{{ nota }}</div>
+          </div>
+          {% endif %}
+        </div>
+        </div>
+</div>
+<hr>
+{% for assign in evaluation %}
+{% set outer_loop = loop %}
+<div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}" data-parent="#acc">
+<div class="mb-3"><h5><i class="bi bi-journal-text"></i> Respuestas {% if not student %}<h7 class="text-muted"> (Marque las correctas)</h7>{% endif %}</h5></div>
+<div id="accordion{{ assign[2][0] }}{{ loop.index }}">
+{% for cell in assign[2][1] %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between collapsed" data-toggle="collapse" data-target="#collapse{{ assign[2][0] }}{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ assign[2][0] }}{{ loop.index }}" id="heading{{ assign[2][0] }}{{ loop.index }}">
+      <p class="h5">({{ loop.index }}) {{ cell[0][0] }} {% if cell[0][1] == True %}<i title="Correcta" class="bi bi-check-circle text-success"></i>{% else %}<i class="bi bi-x-circle text-danger"></i>{% endif %} </p><i title="Incorrecta" class="bi bi-plus-circle h5"></i>
+    </div>
+    <div id="collapse{{ assign[2][0] }}{{ loop.index }}" class="collapse" aria-labelledby="heading{{ assign[2][0] }}{{ loop.index }}" data-parent="#accordion{{ assign[2][0] }}{{ loop.index }}">
+      <div class="card-body">
+        <legend class="border-bottom ml-2"><i class="bi bi-vignette text-warning"></i> Citoplasma</legend>
+        <div class="row">
+          <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-vignette text-warning"></i> Forma:</h5>
+          <h6>{{cell[1][0]}} {% if cell[1][1] == True %}<i title="Correcta" class="bi bi-check-circle text-success"></i>{% else %}<i title="Incorrecta" class="bi bi-x-circle text-danger"></i>{% endif %}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-vignette text-warning"></i> Tamaño:</h5>
+          <h6>{{cell[2][0]}} {% if cell[2][1] == True %}<i title="Correcta" class="bi bi-check-circle text-success"></i>{% else %}<i title="Incorrecta" class="bi bi-x-circle text-danger"></i>{% endif %}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-vignette text-warning"></i> Color:</h5>
+          <h6>{{cell[3][0]}} {% if cell[3][1] == True %}<i title="Correcta" class="bi bi-check-circle text-success"></i>{% else %}<i title="Incorrecta" class="bi bi-x-circle text-danger"></i>{% endif %}</h6>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+        <legend class="border-bottom ml-2"><i class="bi bi-brightness-low-fill text-warning"></i> Núcleo</legend>
+        <div class="row mb-3">
+          <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-brightness-low-fill text-warning"></i> Forma:</h5>
+          <h6>{{cell[4][0]}} {% if cell[4][1] == True %}<i title="Correcta" class="bi bi-check-circle text-success"></i>{% else %}<i title="Incorrecta" class="bi bi-x-circle text-danger"></i>{% endif %}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-brightness-low-fill text-warning"></i> Tamaño:</h5>
+          <h6>{{cell[5][0]}} {% if cell[5][1] == True %}<i title="Correcta" class="bi bi-check-circle text-success"></i>{% else %}<i title="Incorrecta" class="bi bi-x-circle text-danger"></i>{% endif %}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-brightness-low-fill text-warning"></i> Cromatina:</h5>
+          <h6>{{cell[6][0]}} {% if cell[6][1] == True %}<i title="Correcta" class="bi bi-check-circle text-success"></i>{% else %}<i title="Incorrecta" class="bi bi-x-circle text-danger"></i>{% endif %}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+</div>
+
+<hr>
+
+<div id="accordio{{ assign[3][0] }}{{ loop.index }}">
+<div class="card">
+    <div class="card-header d-flex justify-content-between collapsed" data-toggle="collapse" data-target="#collapse{{ assign[3][0] }}{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ assign[3][0] }}{{ loop.index }}" id="heading{{ assign[3][0] }}{{ loop.index }}">
+      <p class="h5"><i class="bi bi-camera2"></i> Microfoto:</p><i class="bi bi-plus-circle h5"></i>
+    </div>
+    <div id="collapse{{ assign[3][0] }}{{ loop.index }}" class="collapse" aria-labelledby="heading{{ assign[3][0] }}{{ loop.index }}" data-parent="#accordio{{ assign[3][0] }}{{ loop.index }}">
+      <div class="card-body">
+        <legend class="border-bottom ml-2"><i class="bi bi-bounding-box text-warning"></i> Campo:</legend>
+        <div class="row">
+          <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-box text-warning"></i> Fondo:</h5>
+          <h6>{{ assign[3][1][0][0] }} {% if assign[3][1][0][1] == True %}<i title="Correcta" class="bi bi-check-circle text-success"></i>{% else %}<i title="Incorrecta" class="bi bi-x-circle text-danger"></i>{% endif %}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-box text-warning"></i> Flora:</h5>
+          <h6>{{ assign[3][1][1][0] }} {% if assign[3][1][1][1] == True %}<i title="Correcta" class="bi bi-check-circle text-success"></i>{% else %}<i title="Incorrecta" class="bi bi-x-circle text-danger"></i>{% endif %}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h6><i class="bi bi-box text-warning"></i> Predominio de celulas:</h6>
+          <h6>{{ assign[3][1][2][0] }} {% if assign[3][1][2][1] == True %}<i title="Correcta" class="bi bi-check-circle text-success"></i>{% else %}<i title="Incorrecta" class="bi bi-x-circle text-danger"></i>{% endif %}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+{% endfor %}
+</div>
+{% endblock content %}

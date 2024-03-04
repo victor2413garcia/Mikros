@@ -1,0 +1,143 @@
+{% extends "layout.html" %}
+{% block header %}
+<div style="background-image: url({{ backgr }});background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;" class="container">
+   <div class="row d-flex justify-content-center">
+     <div class="m-3">
+      <div class="d-flex">
+        <i title="Eliminar" class="bi bi-trash ml-auto text-warning" data-toggle="modal" data-target="#deleteClass"></i>
+      </div>
+        <div class="text-warning">
+          <div class="d-flex justify-content-center">
+          <h1 class="text-white"><i class="bi bi-book text-warning"></i> {{ eval_i.name }} </h1>
+          </div>
+       <div class="d-flex">
+        <div class="input-group input-group-sm m-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1"><i class="bi bi-clipboard"></i></span>
+          </div>
+        <input readonly="true" type="text" class="form-control" placeholder="link de invitacion" aria-label="link de invitacion" aria-describedby="basic-addon1" value="http://{{ port }}{{ url_for('students.dashboard_eval', eval_id=eval_i.id) }}">
+          </div>
+        </div>
+          <div class="d-flex justify-content-center m-4">
+          <h6 class="m-2 text-white"><i class="bi bi-calendar-range text-warning"></i> Desde: {{ eval_i.date_delivered.strftime('%d/%m/%Y') }}</h6><h6 class="m-2 text-white"><i class="bi bi-calendar-event text-warning"></i> Hasta: {{ eval_i.date_limit.strftime('%d/%m/%Y') }}</h6>
+        </div>
+        </div> 
+     </div>
+   </div>
+   <hr>
+ </div>
+{% endblock header %}
+{% block content %}
+<div class="container">
+  <div class="row">
+  <div class="col-md-6">
+  <div class="article-title">
+    <h5><i class="bi bi-info-circle"></i> Descripción</h5>
+  </div>
+  <div style="height: 100px; overflow-y:auto;" class="content-section">
+    {{ eval_i.description }}
+  </div>
+</div>
+<div class="col-md-6">
+  <div class="article-title">
+    <h5><i class="bi bi-images"></i> Microfotos</h5>
+  </div>
+  <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner">
+    {% for image in images %}
+    <div class="carousel-item {% if loop.index0 == 0 %}active{% endif %}">
+      <img class="d-block w-100" src="{{ image }}" alt="{{ loop.index}} slide" height="100px">
+    </div>
+    {% endfor %}
+  </div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<h3><i class="bi bi-book"></i> Mi Panel </h3>
+  <div class="container">
+    <div class="row mx-auto" style="width: 75%;">
+      <table class="table table-sm table-bordered" style="text-align: center;">
+        <thead class="bg-warning">
+          <tr>
+            <th>#</th>
+            <th>Estudiante</th>
+            <th>Accion</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for student in students %}
+          <tr class="bg-white">
+            <td>{{ loop.index }}</td>
+            <td>{{ student[0].name }} {{ student[0].lastname }}</td>
+            <td>{% if student[1] == 'correction' %}<i class="bi bi-journal-check text-success" title="Corregido" onclick="window.location.href='{{ url_for('professors.correction', eval_id=eval_i.id, student_id=student[0].id) }}';"></i>{% elif student[1] == 'response' %}<i class="bi bi-journal-text text-warning" title="Respondido" onclick="window.location.href='{{ url_for('professors.correct', eval_id=eval_i.id, student_id=student[0].id) }}';"></i>{% elif student[1] == 'assign' %}<i class="bi bi-journal" title="Asignado"></i>{% elif student[1] == 'no_assign' %}<i onclick="set_id({{ student[0].id }})" class="bi bi-journal-plus text-danger" data-toggle="modal" data-target="#addAssign" title="Asignar"></i>{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+</div>
+  <!-- Modal -->
+<div class="modal fade" id="addAssign" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Asignar Microfotos</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div style="height: 400px;overflow-y:scroll;" class="modal-body">
+          <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+          <table style="text-align: center;" class="table table-sm table-bordered">
+            <thead>
+              <tr>
+                <th>Microfoto</th>
+                <th>Selección</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for field_name in form.field_names %}
+              <tr>
+                <td><img class="d-block w-100" src="{{ images[loop.index0] }}" height="100px"></td>
+                <td class="align-middle">{{ form[field_name](class="form-control") }}</td>
+              </tr>
+              {% endfor %}
+              {{ form.student_id }}
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <p id="result"></p>
+          <div class="form-group success">
+          </div>
+          {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+<div class="modal fade" id="deleteClass" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Eliminar evaluación</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <div class="form-group">
+            <button class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Cancelar</button>
+            <button class="btn btn-danger" onclick="window.location.href='{{ url_for('professors.delete_eval', eval_id=eval_i.id) }}';">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

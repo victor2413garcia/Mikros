@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="mb-3"><i class="bi bi-book"></i></i> Mis Calificaciones</h1>
+    <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ image_file }}">
+        <div class="media-body">
+          <h2 class="account-heading">{{ current_user.name }} {{ current_user.lastname }}</h2>
+          <h4 class="text-dark">{% if current_user.professors %}Profesor{% else %}Estudiante{% endif %} <i class="bi bi-patch-check-fill text-success"></i></h4>
+          <h4 class="text-dark">{{ uni.name }}</h4>
+        </div>
+      </div>
+      <div class="media">
+        {% for class in class_list %}
+        <table class="table mb-3 table-bordered table-sm" style="text-align: center;">
+            <thead>
+                <tr>
+                    <th colspan="3" class="bg-success text-white">{{ class[0].name }}</th>
+                </tr>
+                <tr class="bg-warning text-white">
+                    <th style="width: 12%;">#</th>
+                    <th style="width: 30%;">Evaluación</th>
+                    <th>Nota</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white">
+            {% for row in class[0].evaluations %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ row.name }}</td>
+                    <td>{% if class[1][loop.index0] %}{{ class[1][loop.index0] }}{% else %}N/A{% endif %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endfor %}
+      </div>
+    </div>
+{% endblock content %}

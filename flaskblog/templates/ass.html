@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+<hr>
+</div>
+<h3><i class="bi bi-book"></i> Asignaciones </h3>
+  <div class="container">
+    <div class="row mx-auto" style="width: 75%;">
+      <table class="table table-sm table-bordered" style="text-align: center;">
+        <thead class="bg-warning">
+          <tr>
+            <th>#</th>
+            <th>Accion</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for student in assign_list %}
+          <tr class="bg-white">
+            <td>{{ loop.index }}</td>
+            <td><i onclick="window.location.href='{{ url_for('professors.correct', microphoto_id=student.microphoto_id, assign_id=student.id) }}';" class="bi bi-journal-plus text-success" title="Corregir">Corregir</i></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+</div>
+  <!-- Modal -->
+{% endblock content %}

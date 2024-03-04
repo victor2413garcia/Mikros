@@ -1,0 +1,211 @@
+
+body {
+  background: #F4F3EE;
+  color: #333333;
+}
+
+.bg-card {
+  background: #F4F3EE;
+  color: #333333;
+}
+
+.minin {
+  min-width:30%;
+  max-width:33%;
+}
+
+.carty {
+  margin-left: 7%;
+}
+
+.spacing {
+  margin-top: 3.5rem;
+}
+
+.no-spacing {
+  margin-top: 5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+
+.bg-steel {
+  background-color: #f9c51b;
+}
+
+thead.bg-warning {
+  background-color: #f9c51b;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #FFFFFF;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #000000;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.container-fluid {
+  background-color: #f9c51b;
+  box-sizing: content-box;
+  width: 97.5%;
+}
+
+.border-cont {
+  background-color: #f9c51b;
+  box-sizing: content-box;
+  width: 90%;
+}
+
+.article-title {
+  color: #444444;
+}
+
+a.article-title:hover {
+  color: #428bca;
+  text-decoration: none;
+}
+
+.borderless {
+  border-color: rgb(0,0,0,0);
+}
+
+.btn-warning {
+  background-color: #f9c51b;
+  color: #FFFFFF;
+}
+
+i.text-warning {
+  color: #f9c51b;
+}
+
+.article-content {
+  white-space: pre-line;
+}
+
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+}
+
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  font-size: 2.5rem;
+}
+
+@media screen and (max-width: 400px){
+.minin {
+  min-width: 50%;
+  max-width: 50%;
+}
+}
+
+.causesidebar {
+  margin-left: 205px;
+}
+
+@media (max-width: 600px){
+.causesidebar {
+  margin-left: 0px;
+}
+}
+
+/*
+ * Sidebar
+ */
+
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 50px 0 0; /* Height of navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+@media (max-width: 767.98px) {
+  .sidebar {
+    top: 2rem;
+  }
+}
+
+.sidebar .nav-link {
+  font-weight: 500;
+  color: #333;
+}
+
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+}
+
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+
+* {box-sizing: border-box;}
+
+.img-zoom-container {
+  position: relative;
+}
+
+.img-zoom-lens {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  /*set the size of the lens:*/
+  width: 40px;
+  height: 40px;
+}
+
+.img-zoom-result {
+  border: 1px solid #d4d4d4;
+  /*set the size of the result div:*/
+  width: 300px;
+  height: 300px;
+}

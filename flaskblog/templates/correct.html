@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1 class="mb-3"><i class="bi bi-book"></i> Corrección iniciada</h1>
+<hr>
+<div class="mb-3"><h5><i class="bi bi-journal-text"></i> Respuestas <h7 class="text-muted"> (Marque las correctas)</h7></h5></div>
+<div id="accordion">
+<form method="POST" action="">
+{{ form.hidden_tag() }}
+{{ form.cell_id }}
+{{ form.assign_id }}
+<div class="card">
+    <div onclick="set_id({{ evaluation[0][2][1][0][7] }}, {{ evaluation[0][2][1][0][8] }})" class="card-header d-flex justify-content-between" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+      <p class="h5 d-flex"><i class="bi bi-pencil"></i>{{ evaluation[0][2][1][0][0] }} <h7>{{ form.cell_type(class="form-control form-control-sm") }}</h7></p><i class="bi bi-plus-circle h5"></i>
+    </div>
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+        <legend class="border-bottom ml-2"><i class="bi bi-vignette text-warning"></i> Citoplasma</legend>
+        <div class="row">
+          <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-vignette text-warning"></i> Forma:</h5>
+          <h6 class="d-flex">{{ evaluation[0][2][1][0][1] }}{{ form.morph_cyto(class="form-control form-control-sm") }}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-vignette text-warning"></i> Tamaño:</h5>
+          <h6 class="d-flex">{{ evaluation[0][2][1][0][2] }} {{ form.size_cyto(class="form-control form-control-sm") }}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-vignette text-warning"></i> Color:</h5>
+          <h6 class="d-flex">{{ evaluation[0][2][1][0][3] }} {{ form.color_cyto(class="form-control form-control-sm") }}</h6>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+        <legend class="border-bottom ml-2"><i class="bi bi-brightness-low-fill text-warning"></i> Núcleo</legend>
+        <div class="row mb-3">
+          <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-brightness-low-fill text-warning"></i> Forma:</h5>
+          <h6 class="d-flex">{{ evaluation[0][2][1][0][4] }} {{ form.morph_core(class="form-control form-control-sm") }}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-brightness-low-fill text-warning"></i> Tamaño:</h5>
+          <h6 class="d-flex">{{ evaluation[0][2][1][0][5] }} {{ form.size_core(class="form-control form-control-sm") }}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-brightness-low-fill text-warning"></i> Cromatina:</h5>
+          <h6 class="d-flex">{{ evaluation[0][2][1][0][6] }} {{ form.chromatin_core(class="form-control form-control-sm") }}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div>
+{% if evaluation[0][3][1] %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between collapsed" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">>
+      <p class="h5"><i class="bi bi-camera2"></i> Microfoto</p><i class="bi bi-plus-circle h5"></i>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+      <div class="card-body">
+        <legend class="border-bottom ml-2"><i class="bi bi-bounding-box text-warning"></i> Campo:</legend>
+        <div class="row">
+          <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-box text-warning"></i> Fondo:</h5>
+          <h6 class="d-flex">{{ evaluation[0][3][1][0] }} {{ form.bg_type(class="form-control form-control-lg") }}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-box text-warning"></i> Flora:</h5>
+          <h6 class="d-flex">{{ evaluation[0][3][1][1] }} {{ form.flora_type(class="form-control form-control-lg") }}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h6><i class="bi bi-box text-warning"></i> Predominio de celulas:</h6>
+          <h6 class="d-flex">{{ evaluation[0][3][1][2] }} {{ form.cell_predominance(class="form-control form-control-lg") }}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+</div>
+<div class="d-flex justify-content-end">
+{{ form.submit(class="form-control form-control-lg bg-warning text-white") }}
+</div>
+</form>
+</div>
+{% endblock content %}
+
+{% block some %}
+<div>
+  <div class="mb-3"><p class="h5"><i class="bi bi-binoculars"></i> Visualización:</p></div>
+  <div class="d-flex">
+      <div class="card bg-light mb-3" style="box-sizing: content-box;">
+        <div class="card-header"><small><i class="bi bi-image"></i> Microfoto (1)</small></div>
+        <div class="card-body">
+          <div class="img-zoom-container">
+            <img id="myimage" src="{{evaluation[0][0][0]}}" width="300" height="300" alt="Girl">
+          </div>
+        </div>
+        </div>
+</div>
+</div>
+{% endblock some %}

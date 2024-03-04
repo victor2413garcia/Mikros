@@ -1,0 +1,262 @@
+{% extends "layout.html" %}
+{% block header %}
+<div class="container-fluid" style="background-image: url({{ backgr }});background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;">
+   <div class="row m-4 d-flex justify-content-between">
+     <div class="card bg-transparent borderless">
+        <div class="card-body m-2">
+          <div class="d-flex justify-content-center">
+          <h1 class="text-white"><i class="bi bi-journals text-warning"></i> {{ class_d.name }} </h1>
+          <i title="Modificar" class="bi bi-pencil-square text-warning" data-toggle="modal" data-target="#editClass"></i><i title="Eliminar" class="bi bi-trash text-warning" data-toggle="modal" data-target="#deleteClass"></i>
+          </div>
+          <h6 class="text-white"><i class="bi bi-calendar-range text-warning"></i> Semestre: {{ class_d.period }}&emsp;<i class="bi bi-calendar-event text-warning"></i> Desde: {{ class_d.date_posted.strftime('%d/%m/%Y') }}</h6>
+        </div> 
+     </div>
+     <div class="m-4">
+      <h6 style="text-align: center;" class="text-white">Invitar estudiantes:</h6>
+     <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1"><i class="bi bi-clipboard"></i></span>
+      </div>
+      <input readonly="true" type="text" class="form-control" placeholder="link de invitacion" aria-label="link de invitacion" aria-describedby="basic-addon1" value="http://{{ port }}{{ url_for('professors.invitation', inv_link=inv_link) }}">
+     </div>
+   </div>
+   </div>
+</div>
+{% endblock header %}
+{% block content %}
+<h3><i class="bi bi-book"></i> Mis Evaluaciones ({{ evals | length }})</h3>
+      <div class="mb-2"><p class="h5"><i class="bi bi-funnel"></i> Filtros: 
+      <button id="boton" class="btn btn-outline-warning btn-sm" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="{% for eval in evals %}multiCollapseExample{{ loop.index0 }}{% endfor %}" onclick="displayPhrase()">Activas</button>
+      </div>
+    <div class="row">
+      {% for eval in evals %}
+      <div id="{% if is_expired[loop.index0] %}multiCollapseExample{{ loop.index0 }}{% endif %}" {% if is_expired[loop.index0] %}class="collapse show multi-collapse minin m-3"{% else %}class="minin m-3"{% endif %}>
+      <div class="card bg-light mb-3" style="box-sizing: content-box; width: 100%;">
+        <div class="card-header"><small>Desde: {{ eval.date_delivered.strftime('%d/%m/%Y') }}</small></div>
+        <div class="card-body">
+          <h4 class="card-title h5">{{ eval.name }}{% if is_expired[loop.index0] %}&nbsp<i title="Expirada" class="bi bi-calendar-x-fill text-secondary"></i>{% else %}&nbsp<i title="Activa" class="bi bi-check-circle-fill text-success"></i>{% endif %}</h4>
+          <p class="card-text"><small>{{ eval.description[0:32] }} {% if eval.description | length > 32 %}...{% endif %}</small></p>
+          <a href="{{ url_for('professors.dashboard_eval', eval_id=eval.id) }}" class="btn {% if is_expired[loop.index0] %}btn-secondary{% else %}btn-success{% endif %}">Ver evaluación</a>
+        </div>
+        <div class="card-footer text-muted ">
+          <small>Hasta: {{ eval.date_limit.strftime('%d/%m/%Y') }}</small>
+        </div>
+      </div>
+    </div>
+      {% endfor %}
+<div class="col-sm-1">
+  <div class="container d-flex h-100">
+    <div class="row justify-content-center align-self-center">
+      <i class="bi bi-plus-circle-fill text-warning h1"  data-toggle="modal" data-target="#addEval"></i>
+    </div>
+  </div>
+</div>
+</div>
+  <!-- Modal -->
+<div class="modal fade" id="addEval" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">{{ legend }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <div class="form-group">
+                {{ form.title.label(class="form-control-label") }}
+                {% if form.title.errors %}
+                    {{ form.title(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.title.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.title(class="form-control") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.description.label(class="form-control-label") }}
+                {% if form.description.errors %}
+                    {{ form.description(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.description.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.description(class="form-control") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.picture.label(class="form-control-label") }}
+                {% if form.picture.errors %}
+                    {{ form.picture(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.picture.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.picture(class="form-control") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.date_limit.label(class="form-control-label") }}
+                {% if form.date_limit.errors %}
+                    {{ form.date_limit(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.date_limit.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.date_limit(class="form-control") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        </div>
+        <div class="modal-footer">
+          <div class="form-group success">
+            {{ form.submit(class="btn btn-outline-info") }}
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal -->
+ <div class="modal fade" id="editClass" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Modificar Clase</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="">
+        {{ edit_c.hidden_tag() }}
+        <fieldset class="form-group">
+            <div class="form-group">
+                {{ edit_c.name.label(class="form-control-label") }}
+                {% if edit_c.name.errors %}
+                    {{ edit_c.name(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in edit_c.name.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ edit_c.name(class="form-control") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ edit_c.quarter.label(class="form-control-label") }}
+                {% if edit_c.quarter.errors %}
+                    {{ edit_c.quarter(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in edit_c.quarter.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ edit_c.quarter(class="form-control") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ edit_c.description.label(class="form-control-label") }}
+                {% if edit_c.description.errors %}
+                    {{ edit_c.description(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in edit_c.description.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ edit_c.description(class="form-control") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        </div>
+        <div class="modal-footer">
+          <div class="form-group success">
+            {{ form.submit(class="btn btn-outline-info") }}
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <div class="modal fade" id="deleteClass" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Eliminar clase</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <div class="form-group">
+            <button class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Cancelar</button>
+            <button class="btn btn-danger" onclick="window.location.href='{{ url_for('professors.delete_class', class_id=class_id) }}';">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript">
+  function displayPhrase() {
+    const boton = document.getElementById('boton');
+    if (boton.textContent === 'Activas') {
+      boton.textContent = 'Todas';
+    } else {
+      boton.textContent = 'Activas';
+    }
+  }
+  </script>
+{% endblock content %}
+
+{% block desc %}
+<div class="col-md-4">
+  <div class="article-title">
+    <h5>Descripción:</h5>
+  </div>
+  <div class="content-section">
+    {{ class_d.description }}
+  </div>
+  <div class="article-title">
+    <h5>Estudiantes:</h5>
+  </div>
+  <div class="content-section">
+    <table class="table table-sm">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>ver</th>
+      </tr>
+      </thead>
+      <tbody>
+        {% for student in students %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ student.name }} {{ student.lastname }}</td>
+          <td><i class="bi bi-eye-fill text-warning" onclick="window.location.href='{{ url_for('professors.student_grade', student_id=student.id, class_id=class_d.id) }}';"></i></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock desc %}

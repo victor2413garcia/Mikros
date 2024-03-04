@@ -1,0 +1,355 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1 class="mb-3"><i class="bi bi-book"></i> Evaluación iniciada</h1>
+    <hr>
+    <div class="mb-3"><p class="h5"><i class="bi bi-binoculars"></i> Visualización:</p></div>
+    <div class="row">
+      <div class="card bg-light mb-3" style="box-sizing: content-box;">
+        <div class="card-header"><small><i class="bi bi-image"></i> Microfoto</small></div>
+        <div class="card-body">
+          <div class="img-zoom-container">
+            <img id="myimage" src="{{ photo[0] }}" width="300" height="300" alt="Girl">
+          </div>
+        </div>
+        </div>
+        <div class="card bg-light mb-3" style="box-sizing: content-box;">
+          <div class="card-header"><small><i class="bi bi-zoom-in"></i> Zoom</small></div>
+          <div class="card-body">
+            <div id="myresult" class="img-zoom-result"></div>
+          </div>
+        </div>
+      </div>
+<hr>
+<div class="mb-3"><h5><i class="bi bi-journal-text"></i> Respuestas</h5></div>
+<div id="accordion">
+{% for cell in cell_list %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between collapsed" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ loop.index }}" id="heading{{ loop.index }}">
+      <p class="h5">({{ loop.index }}) {{ cell[0] }}</p><i class="bi bi-plus-circle h5"></i>
+    </div>
+    <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}" data-parent="#accordion">
+      <div class="card-body">
+        <legend class="border-bottom ml-2"><i class="bi bi-vignette text-warning"></i> Citoplasma</legend>
+        <div class="row">
+          <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-vignette text-warning"></i> Forma:</h5>
+          <h6>{{cell[1]}}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-vignette text-warning"></i> Tamaño:</h5>
+          <h6>{{cell[2]}}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-vignette text-warning"></i> Color:</h5>
+          <h6>{{cell[3]}}</h6>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+        <legend class="border-bottom ml-2"><i class="bi bi-brightness-low-fill text-warning"></i> Núcleo</legend>
+        <div class="row">
+          <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-brightness-low-fill text-warning"></i> Forma:</h5>
+          <h6>{{cell[4]}}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-brightness-low-fill text-warning"></i> Tamaño:</h5>
+          <h6>{{cell[5]}}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-brightness-low-fill text-warning"></i> Cromatina:</h5>
+          <h6>{{cell[6]}}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% if is_expired %}
+<div class="card">
+<div class="card-header mb-3 d-flex justify-content-between" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><p class="h5"><i class="bi bi-virus"></i> Nueva celula</p><i class="bi bi-arrow-down-circle h5"></i></div>
+
+<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+<div class="card-body mb-3">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.cell_type.label(class="form-control-label") }}
+
+                    {% if form.cell_type.errors %}
+                        {{ form.cell_type(class="form-control form-control-sm is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.cell_type.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.cell_type(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+                <fieldset class="form-group" style="float: left; width: 48%; margin-left: 2%;">
+                <legend class="border-bottom mb-4">Citoplasma</legend>
+                <div class="form-group">
+                    {{ form.cyto_morph.label(class="form-control-label") }}
+
+                    {% if form.cyto_morph.errors %}
+                        {{ form.cyto_morph(class="form-control form-control-sm is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.cyto_morph.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.cyto_morph(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.cyto_size.label(class="form-control-label") }}
+
+                    {% if form.cyto_size.errors %}
+                        {{ form.cyto_size(class="form-control form-control-sm is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.cyto_size.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.cyto_size(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.cyto_color.label(class="form-control-label") }}
+
+                    {% if form.cyto_color.errors %}
+                        {{ form.cyto_color(class="form-control form-control-sm is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.cyto_color.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.cyto_color(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+              </fieldset>
+              <fieldset class="form-group" style="float: left; width: 48%; margin-left: 10px;">
+                <legend class="border-bottom mb-4">Núcleo</legend>
+                <div class="form-group">
+                    {{ form.core_morph.label(class="form-control-label") }}
+
+                    {% if form.core_morph.errors %}
+                        {{ form.core_morph(class="form-control form-control-sm is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.core_morph.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.core_morph(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.core_size.label(class="form-control-label") }}
+
+                    {% if form.core_size.errors %}
+                        {{ form.core_size(class="form-control form-control-sm is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.core_size.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.core_size(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.core_chroma.label(class="form-control-label") }}
+                    {% if form.core_chroma.errors %}
+                        {{ form.core_chroma(class="form-control form-control-sm is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.core_chroma.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.core_chroma(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+          <div class="d-flex justify-content-end">
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+          </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+</div>
+{% endif %}
+
+</div>
+
+<hr>
+
+{% if is_expired and not micro_response %}
+<div class="mb-3"><p class="h5"><i class="bi bi-camera2"></i> Microfoto:</p></div>
+<div class="row mb-3">
+  <div class="content-section" style="box-sizing: content-box; width: 100%;">
+        <form method="POST" action="">
+            {{ form_t.hidden_tag() }}
+            <fieldset class="form-group">
+                <div class="form-group">
+                    {{ form_t.backgr_type.label(class="form-control-label") }}
+
+                    {% if form_t.backgr_type.errors %}
+                        {{ form_t.backgr_type(class="form-control form-control-sm is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form_t.backgr_type.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                      {{ form_t.backgr_type(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form_t.flora_type.label(class="form-control-label") }}
+
+                    {% if form_t.flora_type.errors %}
+                        {{ form_t.flora_type(class="form-control form-control-sm is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form_t.flora_type.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                      {{ form_t.flora_type(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form_t.cell_predominance.label(class="form-control-label") }}
+
+                    {% if form_t.cell_predominance.errors %}
+                        {{ form_t.cell_predominance(class="form-control form-control-sm is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form_t.cell_predominance.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                      {{ form_t.cell_predominance(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+              </fieldset>
+          <div class="d-flex justify-content-end">
+            <div class="form-group">
+                {{ form_t.submit(class="btn btn-outline-info") }}
+            </div>
+          </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% else %}
+<div id="accordion1">
+<div class="card">
+    <div class="card-header d-flex justify-content-between collapsed" data-toggle="collapse" data-target="#collapse100" aria-expanded="false" aria-controls="collapse100" id="heading100">
+      <p class="h5"><i class="bi bi-camera2"></i> Microfoto:</p><i class="bi bi-plus-circle h5"></i>
+    </div>
+    <div id="collapse100" class="collapse" aria-labelledby="heading100" data-parent="#accordion1">
+      <div class="card-body">
+        <legend class="border-bottom ml-2"><i class="bi bi-bounding-box text-warning"></i> Campo:</legend>
+        <div class="row">
+          <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-box text-warning"></i> Fondo:</h5>
+          <h6>{{ micro_list[0] }}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h5><i class="bi bi-box text-warning"></i> Flora:</h5>
+          <h6>{{ micro_list[1] }}</h6>
+        </div>
+        <div class="col" style="text-align: center;">
+          <h6><i class="bi bi-box text-warning"></i> Predominio de celulas:</h6>
+          <h6>{{ micro_list[2] }}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endif %}
+
+<script type="text/javascript">
+  function imageZoom(imgID, resultID) {
+  var img, lens, result, cx, cy;
+  img = document.getElementById(imgID);
+  result = document.getElementById(resultID);
+  /* Create lens: */
+  lens = document.createElement("DIV");
+  lens.setAttribute("class", "img-zoom-lens");
+  /* Insert lens: */
+  img.parentElement.insertBefore(lens, img);
+  /* Calculate the ratio between result DIV and lens: */
+  cx = result.offsetWidth / lens.offsetWidth;
+  cy = result.offsetHeight / lens.offsetHeight;
+  /* Set background properties for the result DIV */
+  result.style.backgroundImage = "url('" + img.src + "')";
+  result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+  /* Execute a function when someone moves the cursor over the image, or the lens: */
+  lens.addEventListener("mousemove", moveLens);
+  img.addEventListener("mousemove", moveLens);
+  /* And also for touch screens: */
+  lens.addEventListener("touchmove", moveLens);
+  img.addEventListener("touchmove", moveLens);
+  function moveLens(e) {
+    var pos, x, y;
+    /* Prevent any other actions that may occur when moving over the image */
+    e.preventDefault();
+    /* Get the cursor's x and y positions: */
+    pos = getCursorPos(e);
+    /* Calculate the position of the lens: */
+    x = pos.x - (lens.offsetWidth / 2);
+    y = pos.y - (lens.offsetHeight / 2);
+    /* Prevent the lens from being positioned outside the image: */
+    if (x > img.width - lens.offsetWidth) {x = img.width - lens.offsetWidth;}
+    if (x < 0) {x = 0;}
+    if (y > img.height - lens.offsetHeight) {y = img.height - lens.offsetHeight;}
+    if (y < 0) {y = 0;}
+    /* Set the position of the lens: */
+    lens.style.left = x + "px";
+    lens.style.top = y + "px";
+    /* Display what the lens "sees": */
+    result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+  }
+  function getCursorPos(e) {
+    var a, x = 0, y = 0;
+    e = e || window.event;
+    /* Get the x and y positions of the image: */
+    a = img.getBoundingClientRect();
+    /* Calculate the cursor's x and y coordinates, relative to the image: */
+    x = e.pageX - a.left;
+    y = e.pageY - a.top;
+    /* Consider any page scrolling: */
+    x = x - window.pageXOffset;
+    y = y - window.pageYOffset;
+    return {x : x, y : y};
+  }
+}
+</script>
+<script>
+imageZoom("myimage", "myresult");
+</script>
+{% endblock content %}
+
+{% block myprofile %}
+<div  class="col-md-4">
+  <div class="content-section">
+  <div class="bg-success d-flex justify-content-center">
+    <h3 class="text-white">Usuario</h3>
+  </div>
+  <div class="d-flex justify-content-center">
+    <h4>{{ current_user.name }} {{ current_user.lastname }} <i title="Estudiante" class="bi bi-person-vcard-fill h3" style="color: #d9ad26;"></i></h4>
+  </div>
+  </div>
+</div>
+{% endblock myprofile %}

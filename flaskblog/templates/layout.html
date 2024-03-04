@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+
+
+    {% if title %}
+        <title>Mikros - {{ title }}</title>
+    {% else %}
+        <title>Mikros</title>
+    {% endif %}
+</head>
+<body class="{% if spacing %}spacing{% else %}no-spacing{% endif %} causesidebar">
+  {% block header %}{% endblock %}
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="/"><img src="http://localhost:5000/static/logo.png" width="77px" height="20px"></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+              {% if current_user.is_authenticated %}
+                <a class="nav-item nav-link" href="{{ url_for('users.logout') }}"><i class="bi bi-box-arrow-right text-white h5" title="Cerrar Sesion"></i></a>
+              {% else %}
+                <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Iniciar Sesion</a>
+                <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Registro</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container">
+      {% if current_user.is_authenticated %}
+      {% include 'sidemenu.html' %}
+      {% endif %}
+      <div class="row little">
+        {% if current_user.is_authenticated %}
+        <div class="col-md-8">
+        {% else %}
+        <div class="col-md-9">
+        {% endif %}
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          {% block content %}{% endblock %}
+        </div>
+        {% if layout %}
+        <div class="col-md-4">
+          <div class="content-section">
+            <h3>{{ current_user.name }} {{ current_user.lastname }} <i title="Profesor" style="color: #d9ad26;" class="bi bi-person-vcard-fill h3"></i></h3>
+            <p class='text-muted'>Mis estadisticas:
+              <h6>Clases</h6>
+              <table style="text-align: center;" class="table table-bodered table-sm">
+                <thead>
+                  <tr>
+                    <th>Activas</th>
+                    <th>Cerradas</th>
+                    <th class="bg-light" scope="col">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ (posts | length)-inactivos }}</td>
+                    <td>{{ inactivos }}</td>
+                    <td>{{ posts | length }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h6>Mas <i id="botonito" class="bi bi-chevron-compact-down" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" onclick="displayDownUp()"></i></h6>
+              <table style="text-align: center; " class="table table-bodered table-sm collapse" id="collapseExample">
+                <thead>
+                  <tr>
+                    <th scope="col">Estudiantes</th>
+                    <th scope="col">Evaluaciones</th>
+                    <th scope="col">Microfotos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                  </tr>
+                </tbody>
+              </table>
+            </p>
+          </div>
+        </div>
+        {% endif %}
+        {% if laystudents %}
+        <div  class="col-md-4">
+          <div class="content-section">
+            <h3>{{ current_user.name }} {{ current_user.lastname }} <i title="Estudiante" class="bi bi-person-vcard-fill h3" style="color: #d9ad26;"></i></h3>
+            <p class='text-muted'>Mis estadisticas:</p>
+              <h6>Clases</h6>
+              <table style="text-align: center;" class="table table-bodered table-sm">
+                <thead>
+                  <tr>
+                    <th>Activas</th>
+                    <th>Cerradas</th>
+                    <th class="bg-light" scope="col">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ (posts | length)-inactivos }}</td>
+                    <td>{{ inactivos }}</td>
+                    <td>{{ posts | length }}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+        {% endif %}
+        {% if spacing %}
+          {% block desc %}{% endblock %}
+        {% endif %}
+        {% if myprofile %}
+          {% block myprofile %}{% endblock %}
+        {% endif %}
+        {% if some %}
+          {% block some %}{% endblock %}
+        {% endif %}
+      </div>
+    </main>
+
+    {% include 'footer.html' %}
+
+{% if layout %}
+  <script type="text/javascript">
+  function displayDownUp() {
+    const boton = document.getElementById('botonito');
+      boton.classList.toggle('bi-chevron-compact-down');
+      boton.classList.toggle('bi-chevron-compact-up');
+  }
+  </script>
+{% endif %}
+{% if eval_i %}
+<script type="text/javascript">
+  function set_id(id) {
+    document.getElementById('student_id').value=id;
+  }
+</script>
+
+<script type="text/javascript">
+var checkboxes = document.querySelectorAll("input[type='checkbox']");
+var resultElement = document.getElementById("result");
+
+for (var i = 0; i < checkboxes.length; i++) {
+  checkboxes[i].addEventListener("change", countChecked);
+}
+
+function countChecked() {
+  var count = 0;
+
+  for (var i = 0; i < checkboxes.length; i++) {
+    if (checkboxes[i].checked) {
+      count++;
+    }
+  }
+
+  resultElement.innerHTML = "Seleccionados: " + count;
+}
+</script>
+{% endif %}
+{% if rosa %}
+<script type="text/javascript">
+  function set_id(id, n) {
+    document.getElementById('cell_id').value=id;
+    document.getElementById('assign_id').value=n;
+    console.log(n);
+    console.log(id);
+  }
+</script>
+{% endif %}
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

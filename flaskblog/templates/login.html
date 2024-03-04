@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Iniciar Sesión</legend>
+                <div class="form-group">
+                    {{ form.ci.label(class="form-control-label") }}
+                    {% if form.ci.errors %}
+                        {{ form.ci(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.ci.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.ci(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.password.label(class="form-control-label") }}
+                    {% if form.password.errors %}
+                        {{ form.password(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.password(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-check">
+                    {{ form.remember(class="form-check-input") }}
+                    {{ form.remember.label(class="form-check-label") }}
+                </div>
+            </fieldset>
+            <div class="form-group d-flex justify-content-center">
+                {{ form.submit(class="btn btn-outline-success") }}
+            </div>
+            <div class="d-flex justify-content-center">
+            <small class="text-muted ml-2">
+                <a class="text-success" href="{{ url_for('users.reset_request') }}">¿Olvidaste tu contraseña?</a>
+            </small>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="d-flex justify-content-center">
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            ¿Quieres una cuenta? <a class="ml-1 text-success" href="{{ url_for('users.register') }}">Registrate ahora!</a>
+        </small>
+    </div>
+</div>
+{% endblock content %}

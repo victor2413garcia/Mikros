@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Mikros - Inicio</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/favicon.ico') }}" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Simple line icons-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css" rel="stylesheet" />
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="/"><img src="http://localhost:5000/static/logo.png" width="77px" height="20px"></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+              {% if current_user.is_authenticated %}
+                <a class="nav-item nav-link" href="{{ url_for('users.logout') }}"><i class="bi bi-box-arrow-right text-white h5" title="Cerrar Sesion"></i></a>
+              {% else %}
+                <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Iniciar Sesion</a>
+                <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Registro</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+        <!-- Header-->
+        <header class="masthead d-flex align-items-center">
+            <div class="container px-4 px-lg-5 text-center">
+                <h1 class="mb-1">Mikros</h1>
+                <h3 class="mb-5"><em>Sistema de evaluación de Histocitotecnologia</em></h3>
+                <a class="btn btn-success btn-xl" href="{{ url_for('users.login') }}">Iniciar Sesión</a>
+            </div>
+        </header>
+        <!-- About-->
+        <!-- Services-->
+        <section class="content-section bg-success text-white text-center" id="services">
+            <div class="container px-4 px-lg-5">
+                <div class="content-section-heading">
+                    <h3 class="text-secondary mb-0">Servicios</h3>
+                    <h2 class="mb-5 text-white">¿Que Ofrecemos?</h2>
+                </div>
+                <div class="row gx-4 gx-lg-5">
+                    <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+                        <span class="service-icon rounded-circle mx-auto mb-3"><i class="icon-screen-smartphone"></i></span>
+                        <h4><strong class="text-white">Accesible</strong></h4>
+                        <p class="text-faded mb-0">¡Accede desde tu movil o laptop!</p>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+                        <span class="service-icon rounded-circle mx-auto mb-3"><i class="icon-pencil"></i></span>
+                        <h4><strong class="text-white">Evaluaciones</strong></h4>
+                        <p class="text-faded mb-0">Evaluación de descripción de microfotos</p>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-5 mb-md-0">
+                        <span class="service-icon rounded-circle mx-auto mb-3"><i class="icon-like"></i></span>
+                        <h4><strong class="text-white">Optimo</strong></h4>
+                        <p class="text-faded mb-0">
+                            Mejor experiencia de
+                            <i class="fas fa-heart"></i>
+                            usuario
+                        </p>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <span class="service-icon rounded-circle mx-auto mb-3"><i class="icon-mustache"></i></span>
+                        <h4><strong class="text-white">Profesor/Estudiante</strong></h4>
+                        <p class="text-faded mb-0">Registrate según tu necesidad</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Callout-->
+        <section class="callout">
+            <div class="container px-4 px-lg-5 text-center">
+                <h2 class="mx-auto mb-5">
+                    ¿Todavía no tienes tu <em>cuenta</em>?
+                </h2>
+                <a class="btn btn-success btn-xl" href="{{ url_for('users.register') }}">¡Registrate ahora!</a>
+            </div>
+        </section>
+        <!-- Portfolio-->
+        <section class="content-section" id="portfolio">
+            <div class="container px-4 px-lg-5">
+                <div class="content-section-heading text-center">
+                    <h3 class="text-secondary mb-0">Portafolio</h3>
+                    <h2 class="mb-5">Modulos</h2>
+                </div>
+                <div class="row gx-0">
+                    <div class="col-lg-6">
+                        <a class="portfolio-item" href="#!">
+                            <div class="caption">
+                                <div class="caption-content">
+                                    <div class="h2">Clases</div>
+                                    <p class="mb-0">Ahora puedes reunir a tus estudiantes en aulas virtuales.</p>
+                                </div>
+                            </div>
+                            <img class="img-fluid" src="{{ url_for('static', filename='assets/img/portfolio-1.jpg') }}" alt="..." />
+                        </a>
+                    </div>
+                    <div class="col-lg-6">
+                        <a class="portfolio-item" href="#!">
+                            <div class="caption">
+                                <div class="caption-content">
+                                    <div class="h2">Evaluaciones</div>
+                                    <p class="mb-0">Crea evaluaciones dirigidas a tus estudiantes.</p>
+                                </div>
+                            </div>
+                            <img class="img-fluid" src="{{ url_for('static', filename='/assets/img/portfolio-4.jpg') }}" alt="..." />
+                        </a>
+                    </div>
+                    <div class="col-lg-6">
+                        <a class="portfolio-item" href="#!">
+                            <div class="caption">
+                                <div class="caption-content">
+                                    <div class="h2">Correcciones</div>
+                                    <p class="mb-0">Ahora puedes corregir de manera rapida y sencilla las evaluaciones.</p>
+                                </div>
+                            </div>
+                            <img class="img-fluid" src="{{ url_for('static', filename='/assets/img/portfolio-4.jpg') }}" alt="..." />
+                        </a>
+                    </div>
+                    <div class="col-lg-6">
+                        <a class="portfolio-item" href="#!">
+                            <div class="caption">
+                                <div class="caption-content">
+                                    <div class="h2">Calificaciones</div>
+                                    <p class="mb-0">Haz seguimiento del rendimiento academico de tus estudiantes.</p>
+                                </div>
+                            </div>
+                            <img class="img-fluid" src="{{ url_for('static', filename='assets/img/portfolio-1.jpg') }}" alt="..." />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Call to Action-->
+        <section class="content-section bg-success text-white">
+            <div class="container px-4 px-lg-5 text-center">
+                <h2 class="mb-4 text-white">¿Que tipo de usuario eres?</h2>
+                <a class="btn btn-xl btn-light me-4" href="#!">Estudiante</a>
+                <a class="btn btn-xl btn-warning" href="#!">Profesor</a>
+            </div>
+        </section>
+        <!-- Map-->
+        <!-- Footer-->
+        {% extends 'footer.html' %}
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    </body>
+</html>
