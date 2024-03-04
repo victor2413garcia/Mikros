@@ -1,4 +1,4 @@
-Sistema de Evaluación de Microfotograias de Estudiantes de Histocitotecnologia Mikros (WEB-APP)
+Sistema de Evaluación de Microfotografias de Estudiantes de Histocitotecnologia Mikros (WEB-APP)
 Dirigido a Universidades que imparten las carreras de Citologia, Histologia o Histocitotecnologia.
 Funcionalidades:
 
